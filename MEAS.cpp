@@ -144,7 +144,7 @@ void MEAS::StreamAnaylse(unsigned long len, char* RxBuffer)
 		if (!result && state < 5)
 		{
 			state = 0;
-			//std::cout << "\t" << "error!!!" << std::endl;
+			std::cout << "\t" << "MEAS_error!!!" << std::endl;
 		}
 	}
 }
@@ -374,7 +374,7 @@ int MEAS::readLength(char* RxBuffer)
 	{
 		uint16_t a;
 		uint8_t data[2];
-	}result;;
+	}result;
 
 	if (state < GETLENGTH)
 	{

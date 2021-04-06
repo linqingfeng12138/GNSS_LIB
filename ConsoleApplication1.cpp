@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <windows.h>
 #include "MEAS.h"
+#include "GPSEPH.h"
 
 HANDLE hComm;
 OVERLAPPED OverLapped;
@@ -21,7 +22,7 @@ bool WriteChar(char* szWriteBuffer, DWORD dwSend);  //发送字符
 
 bool OpenPort()
 {
-	hComm = CreateFile(L"COM5",
+	hComm = CreateFile(L"COM3",
 		GENERIC_READ | GENERIC_WRITE,
 		0,
 		0,
@@ -101,6 +102,7 @@ void ReciveChar()
 	DWORD BytesRead = 0;
 	char RXBuff[100] = { 0 };
 	static MEAS msg;
+	static GPSEPH msg2;
 	for (;;)
 	{
 		bResult = ClearCommError(hComm, &dwError, &Comstat);
@@ -108,16 +110,16 @@ void ReciveChar()
 			continue;
 		if (bRead)
 		{
-			bResult = ReadFile(hComm,  //通信设备（此处为串口）句柄，由CreateFile()返回值得到
-				RXBuff,  //指向接收缓冲区
-				1,  //指明要从串口中读取的字节数
-				&BytesRead,   //
-				&OverLapped);  //OVERLAPPED结构
+			bResult = ReadFile(hComm,		//通信设备（此处为串口）句柄，由CreateFile()返回值得到
+				RXBuff,						//指向接收缓冲区
+				1,							//指明要从串口中读取的字节数
+				&BytesRead,					//
+				&OverLapped);				//OVERLAPPED结构
 			//std::cout << RXBuff;
 			if ((bResult && BytesRead))
 			{
-				msg.StreamAnaylse(BytesRead, RXBuff);
-
+				//msg.StreamAnaylse(BytesRead, RXBuff);
+				msg2.StreamAnaylse(BytesRead, RXBuff);
 			}
 			if (!bResult)
 			{
@@ -157,11 +159,11 @@ bool WriteChar(const char* szWriteBuffer, DWORD dwSend)
 	{
 		OverLapped.Offset = 0;
 		OverLapped.OffsetHigh = 0;
-		bResult = WriteFile(hComm,  //通信设备句柄，CreateFile()返回值得到
-			szWriteBuffer,  //指向写入数据缓冲区
-			dwSend,  //设置要写的字节数
-			&BytesSent,  //
-			&OverLapped);  //指向异步I/O数据
+		bResult = WriteFile(hComm,		//通信设备句柄，CreateFile()返回值得到
+			szWriteBuffer,				//指向写入数据缓冲区
+			dwSend,						 //设置要写的字节数
+			&BytesSent,					//
+			&OverLapped);				//指向异步I/O数据
 		if (!bResult)
 		{
 			DWORD dwError = GetLastError();
