@@ -141,10 +141,10 @@ void MEAS::StreamAnaylse(unsigned long len, char* RxBuffer)
 		default:
 			break;
 		}
-		if (!result && state < 5)
+		if (!result && state < 5)   
 		{
 			state = 0;
-			std::cout << "\t" << "MEAS_error!!!" << std::endl;
+			//std::cout << "\t" << "MEAS_error!!!" << std::endl;
 		}
 	}
 }
@@ -159,17 +159,23 @@ int MEAS::findHead(char* RxBuffer) {
 		{
 			state++;
 		}
+		else
+		{
+			state = 1;
+			return 0;
+		}
 		break;
 	case 2:
 		if (*RxBuffer == 0x3E) {
 			state++;
 		}
+		else
+		{
+			state = 1;
+			return 0;
+		}
 		state = 1;
 		return FINDHEAD;
-		break;
-	default:
-		state = 1;
-		return 0;
 		break;
 	}
 	return state;
@@ -351,17 +357,23 @@ int MEAS::findID_Code(char* RxBuffer)
 		{
 			state++;
 		}
+		else
+		{
+			state = 1;
+			return 0;
+		}
 		break;
 	case 2:
 		if (*RxBuffer == 0x09) {
 			state++;
 		}
+		else
+		{
+			state = 1;
+			return 0;
+		}
 		state = 1;
 		return FINDIDCODE;
-		break;
-	default:
-		state = 1;
-		return 0;
 		break;
 	}
 	return state;

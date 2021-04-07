@@ -141,12 +141,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BDSEPH.cpp" />
     <ClCompile Include="ConsoleApplication1.cpp" />
     <ClCompile Include="GPSEPH.cpp" />
     <ClCompile Include="MEAS.cpp" />
     <ClCompile Include="Obs.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BDSEPH.h" />
     <ClInclude Include="GPSEPH.h" />
     <ClInclude Include="MEAS.h" />
     <ClInclude Include="Obs.h" />

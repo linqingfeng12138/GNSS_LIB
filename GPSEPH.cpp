@@ -274,7 +274,7 @@ bool GPSEPH::calculatedata(void)
 
 /**********************************************************************
 * Function		: StreamAnaylse
-* Description	: 解析GPS星历数据
+* Description	: 打印GPS星历数据
 * Return:		: 1 ok		0 fail
 **********************************************************************/
 bool GPSEPH::printdata(void)

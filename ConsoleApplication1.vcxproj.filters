@@ -27,6 +27,9 @@
     <ClCompile Include="GPSEPH.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="BDSEPH.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEAS.h">
@@ -36,6 +39,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GPSEPH.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BDSEPH.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

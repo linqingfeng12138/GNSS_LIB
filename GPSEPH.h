@@ -2,6 +2,8 @@
 
 #include<stdint.h>
 
+#pragma pack(1) //解决了计算机由于对齐问题在结构体中储存地址不连续问题
+
 class GPSEPH
 {
 public:
@@ -9,6 +11,7 @@ public:
 	~GPSEPH();
 	bool StreamAnaylse(unsigned long len, char* RxBuffer);
 private:
+
 	
 	/* GPSEPH星历数据:顺序参照TD0D01协议;部分命名参照rtklib->typedef struct{}eph_t----*/
 	struct GPSEPHdataRaw_t
@@ -79,7 +82,7 @@ private:
 		double OMGd;   /* OMG_dot */
 		double idot;
 	};
-	GPSEPHdata_t GPSEPHdata;
+	GPSEPHdata_t GPSEPHdata;			/* 已转化单位的数据 */
 
 	/* -----读数据状态status----*/
 

@@ -7,6 +7,7 @@
 #include <windows.h>
 #include "MEAS.h"
 #include "GPSEPH.h"
+#include "BDSEPH.h"
 
 HANDLE hComm;
 OVERLAPPED OverLapped;
@@ -103,6 +104,7 @@ void ReciveChar()
 	char RXBuff[100] = { 0 };
 	static MEAS msg;
 	static GPSEPH msg2;
+	static BDSEPH msg3;
 	for (;;)
 	{
 		bResult = ClearCommError(hComm, &dwError, &Comstat);
@@ -118,8 +120,9 @@ void ReciveChar()
 			//std::cout << RXBuff;
 			if ((bResult && BytesRead))
 			{
-				//msg.StreamAnaylse(BytesRead, RXBuff);
-				msg2.StreamAnaylse(BytesRead, RXBuff);
+				msg.StreamAnaylse(BytesRead, RXBuff);
+				//msg2.StreamAnaylse(BytesRead, RXBuff);
+				//msg3.StreamAnaylse(BytesRead, RXBuff);
 			}
 			if (!bResult)
 			{
