@@ -1,41 +1,71 @@
 #pragma once
 
 #include <stdint.h>
-#include "Obs.h"
+
+#define MAXOBS      36     /* max number of obs  受协议中的952长度限制 */
+#define MAXLength   952    /* MEAS数据的最大长度 */
+
 class MEAS
 {
 public:
 	MEAS();
 	~MEAS();
-	void StreamAnaylse(unsigned long len, char* RxBuffer);
-private:
-	//信息长度
-	uint16_t length;
-	//观测时刻 秒
-	double TOW;
-	//观测时刻 周
-	uint16_t WN;
-	//UTC 闰秒
-	int8_t UTC;
-	//观测量个数
-	uint8_t num;
-	//观测数据
-	Obs * weixing[50];
+	bool StreamAnaylse(unsigned long len, char* RxBuffer);
 
-	uint8_t check[2];
-	//各种状态值
-	int FINDHEAD = 3;
-	int FINDIDCODE = 3;
-	int GETLENGTH = 3;
-	int GETTIME = 13;
-	int GETOBS = 27;
+private:
+
+#pragma pack(1) //解决了计算机由于对齐问题在结构体中储存地址不连续问题	
+	
+	struct Obs_t			/*每个卫星的观测值包含以下*/
+	{
+		uint8_t gnss; 		// GNSS类别
+		uint8_t ID;			//卫星ID
+		uint8_t CN0;		//信噪比
+		double L;			//伪距
+		double ph;			//载波相位
+		float d;			//多普勒
+		uint16_t lockTime;	//载波相位锁定时间
+		uint8_t flag;		//标志
+	};
+	struct MEASdata_t
+	{
+		uint16_t length; 	//信息长度
+		double TOW;			//观测时刻 秒
+		uint16_t WN;		//观测时刻 周
+		int8_t UTC;			//UTC 闰秒
+		uint8_t num;		//观测量个数
+
+		Obs_t Obs[MAXOBS];	//观测数据
+	};
+	
+	union MEASdata_U			/* 联合体 */
+	{
+		MEASdata_t MEASdata;		
+		uint8_t buffdata[MAXLength];
+	};
+	MEASdata_U MEASdataU;
+
+#pragma pack()		/* 结束按八位对齐的规则 */
+
+	uint8_t buffdataPoint; //指示联合体的buffdata坐标，写完后立即++，所以指示下一个待写入的位置
+
+	uint8_t check[2];		//校验和
+	enum Status_t			//各种状态值
+	{
+		GOTHEAD = 1,
+		GOTID,
+		GOTLENGTH,
+		GOTTIME,
+		GOTOBS
+	};
 
 private:
 	int findHead(char* RxBuffer);
 	int findID_Code(char* RxBuffer);
-	int readLength(char* RxBuffer);
-	int readTime(char* RxBuffer);
-	int readobs(char* RxBuffer , int num );
-	uint16_t leftlen;
+	int readLength(char* RxBuffer, uint8_t *point);
+	int readTime(char* RxBuffer,uint8_t* point);
+	int readobs(char* RxBuffer , uint8_t* num ,uint8_t* point);
+	int readChkSum(char* RxBuffer);
+	bool printdata(void);
 };
 

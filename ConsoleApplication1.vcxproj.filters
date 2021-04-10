@@ -21,13 +21,16 @@
     <ClCompile Include="MEAS.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Obs.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="GPSEPH.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="BDSEPH.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="printNAV.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,13 +38,16 @@
     <ClInclude Include="MEAS.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Obs.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="GPSEPH.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="BDSEPH.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="printNAV.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

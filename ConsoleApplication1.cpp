@@ -1,7 +1,6 @@
 ﻿// ConsoleApplication1.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
-
 #include <iostream>
 #include <cstdlib>
 #include <windows.h>
@@ -105,6 +104,7 @@ void ReciveChar()
 	static MEAS msg;
 	static GPSEPH msg2;
 	static BDSEPH msg3;
+
 	for (;;)
 	{
 		bResult = ClearCommError(hComm, &dwError, &Comstat);
@@ -123,6 +123,7 @@ void ReciveChar()
 				msg.StreamAnaylse(BytesRead, RXBuff);
 				//msg2.StreamAnaylse(BytesRead, RXBuff);
 				//msg3.StreamAnaylse(BytesRead, RXBuff);
+
 			}
 			if (!bResult)
 			{
@@ -209,7 +210,7 @@ int main()
 		std::cout << "Set timeout success" << std::endl;
 	PurgeComm(hComm, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
 	//WriteChar("Please send data:", 20);
-	std::cout << "Received data:";
+	std::cout << "Received data:" << std::endl;
 	ReciveChar();
 	return EXIT_SUCCESS;
 }

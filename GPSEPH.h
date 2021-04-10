@@ -2,7 +2,7 @@
 
 #include<stdint.h>
 
-#pragma pack(1) //解决了计算机由于对齐问题在结构体中储存地址不连续问题
+
 
 class GPSEPH
 {
@@ -12,7 +12,8 @@ public:
 	bool StreamAnaylse(unsigned long len, char* RxBuffer);
 private:
 
-	
+#pragma pack(1) //解决了计算机由于对齐问题在结构体中储存地址不连续问题
+
 	/* GPSEPH星历数据:顺序参照TD0D01协议;部分命名参照rtklib->typedef struct{}eph_t----*/
 	struct GPSEPHdataRaw_t
 	{
@@ -44,6 +45,8 @@ private:
 		int32_t OMGd;   /* OMG_dot */
 		int16_t idot;
 	};
+		
+#pragma pack()		/* 结束按八位对齐的规则 */
 	
 	union GPSEPHdata_U			/* 联合体 */
 	{
@@ -86,10 +89,13 @@ private:
 
 	/* -----读数据状态status----*/
 
-	uint8_t GOTHEAD = 1;
-	uint8_t GOTID = 2;
-	uint8_t GOTLENGTH = 3;
-	uint8_t GOTGPSEPH = 4;
+	enum Status_t
+	{
+		GOTHEAD = 1,
+		GOTID,
+		GOTLENGTH,
+		GOTGPSEPH
+	};
 
 	uint16_t datalength = 63;	 /* GPS的星历数据长度恒为63 */
 

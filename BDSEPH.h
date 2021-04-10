@@ -2,8 +2,6 @@
 
 #include<stdint.h>
 
-#pragma pack(1)
-
 class BDSEPH
 {
 public:
@@ -13,6 +11,7 @@ public:
 
 private:
 
+#pragma pack(1) //解决了计算机由于对齐问题在结构体中储存地址不连续问题
 	struct BDSEPHdataRaw_t
 	{
 		uint8_t PRN;
@@ -42,6 +41,7 @@ private:
 		int32_t cic;
 		int32_t cis;
 	};
+#pragma pack()		/* 结束按八位对齐的规则*/
 
 	union BDSEPHdata_U			/* 联合体 */
 	{

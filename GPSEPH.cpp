@@ -1,42 +1,15 @@
 #include "GPSEPH.h"
+#include "printNAV.h"
 #include <iostream>
 #include <iomanip>
 #include <math.h>
+
+#define PI          3.1415926535897932  /* pi in GPS-ICD-2000 */
 
 using namespace std;
 
 GPSEPH::GPSEPH()
 {
-	//this->PRN = 0;
-	//this->svh = 0;
-	//this->sva = 0;
-	//this->fit = 0;
-	//this->tgd = 0;
-	//this->iodc = 0;
-	//this->toc = 0;
-	//this->f2 = 0;	
-	//this->f1 = 0;
-	//this->f0 = 0;	
-	//this->iode = 0;
-	//this->crs = 0;
-	//this->deln = 0;
-	//this->M0 = 0;
-	//this->cuc = 0;
-	//this->e	= 0;
-	//this->cus = 0;
-	//this->sqrtA = 0;
-	//this->toes	= 0;
-	//this->cic = 0;
-	//this->OMG0 = 0;
-	//this->cis = 0;
-	//this->i0 = 0; 
-	//this->crc = 0;
-	//this->omg = 0;
-	//this->OMGd = 0;
-	//this->idot = 0;
-
-	this->check[0] = 0;
-	this->check[1] = 0;
 }
 
 GPSEPH::~GPSEPH()
@@ -236,7 +209,7 @@ int  GPSEPH::readChkSum(char* RxBuffer)
 
 /**********************************************************************
 * Function		: calculatedata
-* Description	: 数据进行比例因子的单位转化
+* Description	: 数据进行比例因子的单位转化  unit
 * Return:		: 1 ok		0 fail
 **********************************************************************/
 bool GPSEPH::calculatedata(void)
@@ -245,89 +218,99 @@ bool GPSEPH::calculatedata(void)
 	GPSEPHdata.svh = gpsephdataU.GPSEPHdataRaw.svh;
 	GPSEPHdata.sva = gpsephdataU.GPSEPHdataRaw.sva;
 	GPSEPHdata.fit = gpsephdataU.GPSEPHdataRaw.fit;
-	GPSEPHdata.tgd = gpsephdataU.GPSEPHdataRaw.tgd/pow(2,31);
+	GPSEPHdata.tgd = gpsephdataU.GPSEPHdataRaw.tgd/pow(2,31);			/* s */
 	GPSEPHdata.iodc = gpsephdataU.GPSEPHdataRaw.iodc;
-	GPSEPHdata.toc = gpsephdataU.GPSEPHdataRaw.toc * pow(2,4);
-	GPSEPHdata.f2 = gpsephdataU.GPSEPHdataRaw.f2/pow(2,55);
-	GPSEPHdata.f1 = gpsephdataU.GPSEPHdataRaw.f1 / pow(2, 43);
-	GPSEPHdata.f0 = gpsephdataU.GPSEPHdataRaw.f0 / pow(2, 31);
+	GPSEPHdata.toc = gpsephdataU.GPSEPHdataRaw.toc * pow(2,4);			/* s */
+	GPSEPHdata.f2 = gpsephdataU.GPSEPHdataRaw.f2/pow(2,55);				/* s/s2 */
+	GPSEPHdata.f1 = gpsephdataU.GPSEPHdataRaw.f1 / pow(2, 43);			/* s/s */
+	GPSEPHdata.f0 = gpsephdataU.GPSEPHdataRaw.f0 / pow(2, 31);			/* s */
 	GPSEPHdata.iode = gpsephdataU.GPSEPHdataRaw.iode;
-	GPSEPHdata.crs = gpsephdataU.GPSEPHdataRaw.crs / pow(2, 5);
-	GPSEPHdata.deln = gpsephdataU.GPSEPHdataRaw.deln / pow(2, 43);
-	GPSEPHdata.M0 = gpsephdataU.GPSEPHdataRaw.M0 / pow(2, 31);
-	GPSEPHdata.cuc = gpsephdataU.GPSEPHdataRaw.cuc / pow(2, 29);
-	GPSEPHdata.e = gpsephdataU.GPSEPHdataRaw.e / pow(2, 33);
-	GPSEPHdata.cus = gpsephdataU.GPSEPHdataRaw.cus / pow(2, 29);
-	GPSEPHdata.sqrtA = gpsephdataU.GPSEPHdataRaw.sqrtA / pow(2, 19);
-	GPSEPHdata.toes = gpsephdataU.GPSEPHdataRaw.toes * pow(2, 4);
-	GPSEPHdata.cic = gpsephdataU.GPSEPHdataRaw.cic / pow(2, 29);
-	GPSEPHdata.OMG0 = gpsephdataU.GPSEPHdataRaw.OMG0 / pow(2, 31);
-	GPSEPHdata.cis = gpsephdataU.GPSEPHdataRaw.cis / pow(2, 29);
-	GPSEPHdata.i0 = gpsephdataU.GPSEPHdataRaw.i0 / pow(2, 31);
-	GPSEPHdata.crc = gpsephdataU.GPSEPHdataRaw.crc / pow(2, 5);
-	GPSEPHdata.omg = gpsephdataU.GPSEPHdataRaw.omg / pow(2, 31);
-	GPSEPHdata.OMGd = gpsephdataU.GPSEPHdataRaw.OMGd / pow(2, 43);
-	GPSEPHdata.idot = gpsephdataU.GPSEPHdataRaw.idot / pow(2, 43);
+	GPSEPHdata.crs = gpsephdataU.GPSEPHdataRaw.crs / pow(2, 5);			/* m */
+	GPSEPHdata.deln = gpsephdataU.GPSEPHdataRaw.deln *PI / pow(2, 43);	/* pi/s */
+	GPSEPHdata.M0 = gpsephdataU.GPSEPHdataRaw.M0 *PI / pow(2, 31);		/* pi */
+	GPSEPHdata.cuc = gpsephdataU.GPSEPHdataRaw.cuc / pow(2, 29);		/* rad */
+	GPSEPHdata.e = gpsephdataU.GPSEPHdataRaw.e / pow(2, 33);	
+	GPSEPHdata.cus = gpsephdataU.GPSEPHdataRaw.cus / pow(2, 29);		/* rad */
+	GPSEPHdata.sqrtA = gpsephdataU.GPSEPHdataRaw.sqrtA / pow(2, 19);	/* m1/2 */
+	GPSEPHdata.toes = gpsephdataU.GPSEPHdataRaw.toes * pow(2, 4);		/* s */
+	GPSEPHdata.cic = gpsephdataU.GPSEPHdataRaw.cic / pow(2, 29);		/* rad */
+	GPSEPHdata.OMG0 = gpsephdataU.GPSEPHdataRaw.OMG0 *PI / pow(2, 31);	/* pi */
+	GPSEPHdata.cis = gpsephdataU.GPSEPHdataRaw.cis / pow(2, 29);		/* rad */
+	GPSEPHdata.i0 = gpsephdataU.GPSEPHdataRaw.i0 *PI / pow(2, 31);		/* pi */
+	GPSEPHdata.crc = gpsephdataU.GPSEPHdataRaw.crc / pow(2, 5);			/* rad */
+	GPSEPHdata.omg = gpsephdataU.GPSEPHdataRaw.omg *PI / pow(2, 31);	/* pi */
+	GPSEPHdata.OMGd = gpsephdataU.GPSEPHdataRaw.OMGd *PI / pow(2, 43);	/* pi/s */
+	GPSEPHdata.idot = gpsephdataU.GPSEPHdataRaw.idot *PI / pow(2, 43);	/* pi/s */
 
 	return 1;
 }
 
 /**********************************************************************
-* Function		: StreamAnaylse
+* Function		: printdata
 * Description	: 打印GPS星历数据
 * Return:		: 1 ok		0 fail
+* Reference		: 根据RINEX305/304混合导航文件打印格式
 **********************************************************************/
 bool GPSEPH::printdata(void)
 {
-	//std::cout << left;
-	std::cout << (short)GPSEPHdata.PRN	<<  std::endl;
-	std::cout << "\t";
-	std::cout << setw(15) << scientific << GPSEPHdata.toc << "\t""\t";
-	std::cout << setw(15) << scientific << GPSEPHdata.f0 << "\t""\t";
-	std::cout << setw(15) << scientific << GPSEPHdata.f1 << "\t""\t";
-	std::cout << setw(15) << scientific << GPSEPHdata.f2 << std::endl;
+	printNAV NAVgps;
 
-	std::cout << "\t";
-	std::cout << setw(15) << GPSEPHdata.iode << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.crs << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.deln << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.M0 << std::endl;
+	std::cout << left;
+	std::cout << setw(1) << "G";
 
-	std::cout << "\t";
-	std::cout << setw(15) << GPSEPHdata.cuc << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.e << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.cus << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.sqrtA << std::endl;
+	NAVgps.printPRN(GPSEPHdata.PRN);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.toc);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.f0);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.f1);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.f2);
+	std::cout  << std::endl;
 
-	std::cout << "\t";
-	std::cout << setw(15) << GPSEPHdata.toes << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.cic << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.OMG0 << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.cis << std::endl;
+	std::cout << setw(4) << " ";
+	NAVgps.printNAVdata1dot12(GPSEPHdata.iode);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.crs);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.deln);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.M0);
+	std::cout << std::endl;
 
-	std::cout << "\t";
-	std::cout << setw(15) << GPSEPHdata.idot << "\t""\t";
-	std::cout << setw(15) << "L2载波上的码"				<< "\t""\t";
-	std::cout << setw(15) << "GPS周号"					<< "\t""\t";
-	std::cout << setw(15) << "L2P码数据标志"			<< std::endl;
+	std::cout << setw(4) << " ";
+	NAVgps.printNAVdata1dot12(GPSEPHdata.cuc);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.e);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.cus);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.sqrtA);
+	std::cout << std::endl;
 
-	std::cout << "\t";
-	std::cout << setw(15) << GPSEPHdata.i0 << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.crc << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.omg << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.OMGd << std::endl;
+	std::cout << setw(4) << " ";
+	NAVgps.printNAVdata1dot12(GPSEPHdata.toes);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.cic);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.OMG0);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.cis);
+	std::cout << std::endl;
 
-	std::cout << "\t";
-	std::cout << setw(15) << GPSEPHdata.sva << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.svh << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.tgd << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.iodc << std::endl;
+	std::cout << setw(4) << " ";
+	NAVgps.printNAVdata1dot12(GPSEPHdata.i0);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.crc);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.omg);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.OMGd);
+	std::cout << std::endl;
 
-	std::cout << "\t";
-	std::cout << setw(15) << "信息传递时间" << "\t""\t";
-	std::cout << setw(15) << GPSEPHdata.fit << "\t""\t";
-	std::cout << setw(15) << "备用" << "\t""\t";
-	std::cout << setw(15)<< "备用" << std::endl;
+	std::cout << setw(4) << " ";
+	NAVgps.printNAVdata1dot12(GPSEPHdata.idot);
+	NAVgps.printNAVdata1dot12(0.0);
+	NAVgps.printNAVdata1dot12(0.0);
+	NAVgps.printNAVdata1dot12(0.0);
+	std::cout << std::endl;
+
+	std::cout << setw(4) << " ";
+	NAVgps.printNAVdata1dot12(GPSEPHdata.sva);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.svh);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.tgd);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.iodc);
+	std::cout << std::endl;
+
+	std::cout << setw(4) << " ";
+	NAVgps.printNAVdata1dot12(0.0);
+	NAVgps.printNAVdata1dot12(GPSEPHdata.fit);
+	std::cout << std::endl;
 
 	return 1;
 
@@ -354,7 +337,7 @@ bool GPSEPH::StreamAnaylse(unsigned long len, char* RxBuffer)
 			if (result == 1)					//如果完成读取则状态更新
 			{
 				status = GOTHEAD;
-				std::cout << "\t" << (short)status ;
+				//std::cout << "\t" << (short)status ;
 			}
 			break;
 
@@ -365,7 +348,7 @@ bool GPSEPH::StreamAnaylse(unsigned long len, char* RxBuffer)
 			if (result == 1)		
 			{
 				status = GOTID;
-				std::cout <<  (short)status ;				
+				//std::cout <<  (short)status ;				
 			}
 			break;
 			
@@ -376,7 +359,7 @@ bool GPSEPH::StreamAnaylse(unsigned long len, char* RxBuffer)
 			if (result == 1)				
 			{
 				status = GOTLENGTH;
-				std::cout <<  (short)status;
+				//std::cout <<  (short)status;
 			}
 			break;
 			
@@ -387,8 +370,8 @@ bool GPSEPH::StreamAnaylse(unsigned long len, char* RxBuffer)
 			if (result == 1)
 			{
 				status = GOTGPSEPH;
-				std::cout <<  (short)status;
-				std::cout << "  !!  " <<(short)gpsephdataU.GPSEPHdataRaw.PRN;
+				//std::cout <<  (short)status;
+				//std::cout << "  !!  " <<(short)gpsephdataU.GPSEPHdataRaw.PRN;
 				calculatedata();
 			}
 			break;
@@ -397,7 +380,8 @@ bool GPSEPH::StreamAnaylse(unsigned long len, char* RxBuffer)
 			result = readChkSum(RxBuffer + i);
 			if (result == 1)
 			{
-				status = 5;		std::cout <<  (short)status << std::endl;  //调试打印
+				status = 5;		
+				//std::cout <<  (short)status << std::endl;  //调试打印
 				printdata();
 				status = 0;						//读取成功后状态清零
 			}
@@ -410,6 +394,7 @@ bool GPSEPH::StreamAnaylse(unsigned long len, char* RxBuffer)
 		if (result == -1)				//如果读取失败，则状态重新开始
 		{
 			status = 0;
+			return 0;
 		}
 	}
 	return 1;

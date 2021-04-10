@@ -1,7 +1,10 @@
 #include "BDSEPH.h"
+#include "printNAV.h"
 #include <math.h>
 #include <iostream>
 #include <iomanip>
+
+#define PI  3.1415926535898	/* pi in BDS-ICD-2019 */
 
 using namespace std;
 
@@ -202,7 +205,7 @@ int BDSEPH::readChkSum(char* RxBuffer)
 
 /**********************************************************************
 * Function		: calculatedata
-* Description	: 数据进行比例因子的单位转化
+* Description	: 数据进行比例因子的单位转化   unit
 * Return:		: 1 ok		0 fail
 **********************************************************************/
 bool BDSEPH::calculatedata(void) {
@@ -210,29 +213,29 @@ bool BDSEPH::calculatedata(void) {
 	BDSEPHdata.PRN = bdsephdataU.BDSEPHdataRaw.PRN;
 	BDSEPHdata.SatH1 = bdsephdataU.BDSEPHdataRaw.SatH1;
 	BDSEPHdata.URA1= bdsephdataU.BDSEPHdataRaw.URA1;
-	BDSEPHdata.Tgd1 = bdsephdataU.BDSEPHdataRaw.Tgd1*0.1;
+	BDSEPHdata.Tgd1 = bdsephdataU.BDSEPHdataRaw.Tgd1*0.1;			/* ns */
 	BDSEPHdata.AODC = bdsephdataU.BDSEPHdataRaw.AODC;
-	BDSEPHdata.toc = bdsephdataU.BDSEPHdataRaw.toc*pow(2,3);
-	BDSEPHdata.a0 = bdsephdataU.BDSEPHdataRaw.a0 / pow(2,33);
-	BDSEPHdata.a1 = bdsephdataU.BDSEPHdataRaw.a1 / pow(2,50);
-	BDSEPHdata.a2 = bdsephdataU.BDSEPHdataRaw.a2 / pow(2,66);
+	BDSEPHdata.toc = bdsephdataU.BDSEPHdataRaw.toc*pow(2,3);		/* s */
+	BDSEPHdata.a0 = bdsephdataU.BDSEPHdataRaw.a0 / pow(2,33);		/* s */
+	BDSEPHdata.a1 = bdsephdataU.BDSEPHdataRaw.a1 / pow(2,50);		/* s/s */
+	BDSEPHdata.a2 = bdsephdataU.BDSEPHdataRaw.a2 / pow(2,66);		/* s/s2 */
 	BDSEPHdata.AODE = bdsephdataU.BDSEPHdataRaw.AODE;
-	BDSEPHdata.toe = bdsephdataU.BDSEPHdataRaw.toe*pow(2,3);
-	BDSEPHdata.sqrtA = bdsephdataU.BDSEPHdataRaw.sqrtA/pow(2,19);
+	BDSEPHdata.toe = bdsephdataU.BDSEPHdataRaw.toe*pow(2,3);		/* s */
+	BDSEPHdata.sqrtA = bdsephdataU.BDSEPHdataRaw.sqrtA/pow(2,19);	/* m1/2 */
 	BDSEPHdata.e = bdsephdataU.BDSEPHdataRaw.e / pow(2,33);
-	BDSEPHdata.omg = bdsephdataU.BDSEPHdataRaw.omg / pow(2, 31);
-	BDSEPHdata.deln = bdsephdataU.BDSEPHdataRaw.deln / pow(2, 43);
-	BDSEPHdata.M0 = bdsephdataU.BDSEPHdataRaw.M0 / pow(2, 31);
-	BDSEPHdata.OMG0 = bdsephdataU.BDSEPHdataRaw.OMG0 / pow(2, 31);
-	BDSEPHdata.OMGd = bdsephdataU.BDSEPHdataRaw.OMGd / pow(2, 43);
-	BDSEPHdata.i0 = bdsephdataU.BDSEPHdataRaw.i0 / pow(2, 31);
-	BDSEPHdata.IDOT = bdsephdataU.BDSEPHdataRaw.IDOT / pow(2, 43);
-	BDSEPHdata.cuc = bdsephdataU.BDSEPHdataRaw.cuc / pow(2, 31);
-	BDSEPHdata.cus = bdsephdataU.BDSEPHdataRaw.cus / pow(2, 31);
-	BDSEPHdata.crc = bdsephdataU.BDSEPHdataRaw.crc / pow(2, 6);
-	BDSEPHdata.crs = bdsephdataU.BDSEPHdataRaw.crs / pow(2, 6);
-	BDSEPHdata.cic = bdsephdataU.BDSEPHdataRaw.cic / pow(2, 31);
-	BDSEPHdata.cis = bdsephdataU.BDSEPHdataRaw.cis / pow(2, 31);
+	BDSEPHdata.omg = bdsephdataU.BDSEPHdataRaw.omg * PI / pow(2, 31);	/* pi */
+	BDSEPHdata.deln = bdsephdataU.BDSEPHdataRaw.deln * PI / pow(2, 43);	/* pi/s */
+	BDSEPHdata.M0 = bdsephdataU.BDSEPHdataRaw.M0 * PI / pow(2, 31);		/* pi */
+	BDSEPHdata.OMG0 = bdsephdataU.BDSEPHdataRaw.OMG0 * PI / pow(2, 31);	/* pi */
+	BDSEPHdata.OMGd = bdsephdataU.BDSEPHdataRaw.OMGd * PI / pow(2, 43);	/* pi/s */
+	BDSEPHdata.i0 = bdsephdataU.BDSEPHdataRaw.i0 * PI / pow(2, 31);		/* pi */
+	BDSEPHdata.IDOT = bdsephdataU.BDSEPHdataRaw.IDOT * PI / pow(2, 43);	/* pi/s */
+	BDSEPHdata.cuc = bdsephdataU.BDSEPHdataRaw.cuc / pow(2, 31);	/* rad */
+	BDSEPHdata.cus = bdsephdataU.BDSEPHdataRaw.cus / pow(2, 31);	/* rad */
+	BDSEPHdata.crc = bdsephdataU.BDSEPHdataRaw.crc / pow(2, 6);		/* m */
+	BDSEPHdata.crs = bdsephdataU.BDSEPHdataRaw.crs / pow(2, 6);		/* m */
+	BDSEPHdata.cic = bdsephdataU.BDSEPHdataRaw.cic / pow(2, 31);	/* rad */
+	BDSEPHdata.cis = bdsephdataU.BDSEPHdataRaw.cis / pow(2, 31);	/* rad */
 
 	return 1;
 }
@@ -241,62 +244,70 @@ bool BDSEPH::calculatedata(void) {
 * Function		: StreamAnaylse
 * Description	: 打印BDS星历数据
 * Return:		: 1 ok		0 fail
-* Referrence	: 根据RINEX305.pdf的A14北斗导航文档打印格式
+* Reference		: 根据RINEX305/304混合导航文件打印格式
 **********************************************************************/
-bool BDSEPH::printdata(void) {
+bool BDSEPH::printdata(void) 
+{
+	printNAV NAVbds;
 
 	std::cout << left;
-	std::cout << setw(1) << "C"  ;
-	std::cout << setw(3) << (short)BDSEPHdata.PRN ;
-	std::cout << setw(20) << scientific << BDSEPHdata.toc ;
-	std::cout << setw(20) << scientific << BDSEPHdata.a0 ;
-	std::cout << setw(20) << scientific << BDSEPHdata.a1 ;
-	std::cout << setw(20) << scientific << BDSEPHdata.a2 << std::endl;
-	
-	std::cout << setw(4) << "  ";
-	std::cout << setw(20) << scientific << BDSEPHdata.AODE;
-	std::cout << setw(20) << scientific << BDSEPHdata.crc;
-	std::cout << setw(20) << scientific << BDSEPHdata.deln;
-	std::cout << setw(20) << scientific << BDSEPHdata.M0 << std::endl;
+	std::cout << setw(1) << "C";
 
-	std::cout << setw(4) << "  ";
-	std::cout << setw(20) << scientific << BDSEPHdata.cuc;
-	std::cout << setw(20) << scientific << BDSEPHdata.e;
-	std::cout << setw(20) << scientific << BDSEPHdata.cus;
-	std::cout << setw(20) << scientific << BDSEPHdata.sqrtA << std::endl;
-	
-	std::cout << setw(4) << "  ";
-	std::cout << setw(20) << scientific << BDSEPHdata.toe;
-	std::cout << setw(20) << scientific << BDSEPHdata.cic;
-	std::cout << setw(20) << scientific << BDSEPHdata.OMG0;
-	std::cout << setw(20) << scientific << BDSEPHdata.cis << std::endl;
+	NAVbds.printPRN(BDSEPHdata.PRN);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.toc);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.a0);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.a1);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.a2);
+	std::cout << std::endl;
 
-	std::cout << setw(4) << "  ";
-	std::cout << setw(20) << scientific << BDSEPHdata.i0;
-	std::cout << setw(20) << scientific << BDSEPHdata.crc;
-	std::cout << setw(20) << scientific << BDSEPHdata.omg;
-	std::cout << setw(20) << scientific << BDSEPHdata.OMGd << std::endl;
+	std::cout << setw(4) << " ";
+	NAVbds.printNAVdata1dot12(BDSEPHdata.AODE);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.crs);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.deln);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.M0);
+	std::cout << std::endl;
 
-	std::cout << setw(4) << "  ";
-	std::cout << setw(20) << scientific << BDSEPHdata.IDOT;
-	std::cout << setw(20) << "------";
-	std::cout << setw(20) << "BDS WEEK";
-	std::cout << setw(20) << "------" << std::endl;
+	std::cout << setw(4) << " ";
+	NAVbds.printNAVdata1dot12(BDSEPHdata.cuc);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.e);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.cus);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.sqrtA);
+	std::cout << std::endl;
 
-	std::cout << setw(4) << "  ";
-	std::cout << setw(20) << scientific << BDSEPHdata.URA1;
-	std::cout << setw(20) << scientific << BDSEPHdata.SatH1;
-	std::cout << setw(20) << scientific << BDSEPHdata.Tgd1;
-	std::cout << setw(20) << scientific << "------" << std::endl;
+	std::cout << setw(4) << " ";
+	NAVbds.printNAVdata1dot12(BDSEPHdata.toe);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.cic);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.OMG0);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.cis);
+	std::cout << std::endl;
 
-	std::cout << setw(4) << "  ";
-	std::cout << setw(20) << "BDS WEEK";
-	std::cout << setw(20) << scientific << BDSEPHdata.AODC;
-	std::cout << setw(20) << "------";
-	std::cout << setw(20) << "------" << std::endl;
+	std::cout << setw(4) << " ";
+	NAVbds.printNAVdata1dot12(BDSEPHdata.i0);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.crc);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.omg);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.OMGd);
+	std::cout << std::endl;
+
+	std::cout << setw(4) << " ";
+	NAVbds.printNAVdata1dot12(BDSEPHdata.IDOT);
+	NAVbds.printNAVdata1dot12(0.0);
+	NAVbds.printNAVdata1dot12(0.0);
+	NAVbds.printNAVdata1dot12(0.0);
+	std::cout << std::endl;
+
+	std::cout << setw(4) << " ";
+	NAVbds.printNAVdata1dot12(BDSEPHdata.URA1);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.SatH1);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.Tgd1);
+	NAVbds.printNAVdata1dot12(0.0);  //TGD2 B2/B3 (seconds)
+	std::cout << std::endl;
+
+	std::cout << setw(4) << " ";
+	NAVbds.printNAVdata1dot12(0.0);
+	NAVbds.printNAVdata1dot12(BDSEPHdata.AODC);
+	std::cout << std::endl;
 
 	return 1;
-
 }
 
 
@@ -321,7 +332,7 @@ bool BDSEPH::StreamAnaylse(unsigned long len, char* RxBuffer) {
 			if (result == 1)					//如果完成读取则状态更新
 			{
 				status = GOTHEAD;
-				std::cout << "\t" << (short)status;
+				//std::cout << "\t" << (short)status;
 			}
 			break;
 
@@ -332,7 +343,7 @@ bool BDSEPH::StreamAnaylse(unsigned long len, char* RxBuffer) {
 			if (result == 1)
 			{
 				status = GOTID;
-				std::cout << (short)status;
+				//std::cout << (short)status;
 			}
 			break;
 
@@ -343,7 +354,7 @@ bool BDSEPH::StreamAnaylse(unsigned long len, char* RxBuffer) {
 			if (result == 1)
 			{
 				status = GOTLENGTH;
-				std::cout << (short)status;
+				//std::cout << (short)status;
 			}
 			break;
 
@@ -354,8 +365,8 @@ bool BDSEPH::StreamAnaylse(unsigned long len, char* RxBuffer) {
 			if (result == 1)
 			{
 				status = GOTBDSEPH;
-				std::cout << (short)status;
-				std::cout << "  !!  " << (short)bdsephdataU.BDSEPHdataRaw.PRN;
+				//std::cout << (short)status;
+				//std::cout << "  !!  " << (short)bdsephdataU.BDSEPHdataRaw.PRN;
 				calculatedata();
 			}
 			break;
@@ -364,7 +375,8 @@ bool BDSEPH::StreamAnaylse(unsigned long len, char* RxBuffer) {
 			result = readChkSum(RxBuffer + i);
 			if (result == 1)
 			{
-				status = 5;		std::cout << (short)status << std::endl;  //调试打印
+				status = 5;		
+				//std::cout << (short)status << std::endl;  //调试打印
 				printdata();
 				status = 0;						//读取成功后状态清零
 			}
@@ -377,6 +389,7 @@ bool BDSEPH::StreamAnaylse(unsigned long len, char* RxBuffer) {
 		if (result == -1)				//如果读取失败，则状态重新开始
 		{
 			status = 0;
+			return 0;
 		}
 	}
 	return 1;
