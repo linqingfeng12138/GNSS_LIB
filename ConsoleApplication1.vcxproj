@@ -146,14 +146,14 @@
     <ClCompile Include="ConsoleApplication1.cpp" />
     <ClCompile Include="GPSEPH.cpp" />
     <ClCompile Include="MEAS.cpp" />
-    <ClCompile Include="printNAV.cpp" />
+    <ClCompile Include="printF.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BDSEPH.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="GPSEPH.h" />
     <ClInclude Include="MEAS.h" />
-    <ClInclude Include="printNAV.h" />
+    <ClInclude Include="printF.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

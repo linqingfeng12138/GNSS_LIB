@@ -1,5 +1,6 @@
 #include "GPSEPH.h"
-#include "printNAV.h"
+#include "printF.h"
+#include "common.h"
 #include <iostream>
 #include <iomanip>
 #include <math.h>
@@ -253,11 +254,23 @@ bool GPSEPH::calculatedata(void)
 **********************************************************************/
 bool GPSEPH::printdata(void)
 {
-	printNAV NAVgps;
+	printF NAVgps;
 
+	/*Common gpsCalender;
+	gtime_t ttemp;
 	std::cout << left;
 	std::cout << setw(1) << "G";
+	NAVgps.printPRN(GPSEPHdata.PRN);
+	//计算EPOCH
+	ttemp = gpsCalender.epoch2time(gpst0);		//获得整秒+小数秒的gpst0时间  周数？？？
+	ttemp = gpsCalender.timeadd(ttemp, GPSEPHdata.toc); //获得从1970年开始的time总数
+	gpsCalender.time2epoch(ttemp, gpsCalender.ep);
+	//打印EPOCH
+	NAVgps.printNavEpoch(gpsCalender.ep); //打印EPOCH格式的toc
+	*/
 
+	std::cout << endl;
+	std::cout << setw(1) << "G";
 	NAVgps.printPRN(GPSEPHdata.PRN);
 	NAVgps.printNAVdata1dot12(GPSEPHdata.toc);
 	NAVgps.printNAVdata1dot12(GPSEPHdata.f0);

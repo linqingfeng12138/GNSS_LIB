@@ -1,4 +1,6 @@
 #include "MEAS.h"
+#include "printF.h"
+#include "common.h"
 #include <iostream>
 #include <iomanip>
 
@@ -389,12 +391,38 @@ int  MEAS::readChkSum(char* RxBuffer)
 **********************************************************************/
 bool MEAS::printdata(void)
 {
+	//计算从TOW,WN到日历UTC的转换
+	Common MEASCalender;
+	MEASCalender.BDST2EPH(MEASdataU.MEASdata.TOW, MEASdataU.MEASdata.WN, MEASCalender.ep);
+
+	//开始打印
+	printF OBS_MEAS;
+
+	//打印源数据
+	std::cout << "\t" << endl;
+	std::cout << "TOW：" << this->MEASdataU.MEASdata.TOW << "\t"
+				<<"WN: " << this->MEASdataU.MEASdata.WN << std::endl;
+	std::cout << "UTC: " << (short)this->MEASdataU.MEASdata.UTC << "\t"
+				<< "num: "<< (short)this->MEASdataU.MEASdata.num << std::endl;
+
+	//打印EPOCH
 	std::cout << left;
-	std::cout << ">" ;
-	std::cout << "\t" << this->MEASdataU.MEASdata.TOW << "\t" << this->MEASdataU.MEASdata.WN << "\t" << (short)this->MEASdataU.MEASdata.UTC << "\t" << (short)this->MEASdataU.MEASdata.num << std::endl;
-	cout << setw(12) << "GNSS CLASS" << setw(12) << "ID" << setw(12) << "CN0"
-		<< setw(15) << "PR" << setw(15) << "carrier phase" << setw(12) << "Doppler"
-		<< setw(12) << "lock time" << setw(12) << "Flag" << std::endl;
+	std::cout << "> ";
+	OBS_MEAS.printObsEpoch(MEASCalender.ep);
+	std::cout << "  ";
+	std::cout << (short)MEASdataU.MEASdata.num;
+	std::cout << endl;
+
+	cout << setw(12) << "GNSS CLASS" 
+		<< setw(12) << "ID" 
+		<< setw(12) << "CN0"
+		<< setw(15) << "PR" 
+		<< setw(15) << "carrier phase" 
+		<< setw(12) << "Doppler"
+		<< setw(12) << "lock time" 
+		<< setw(12) << "Flag" 
+		<< std::endl;
+
 	for (int k = 0; k < this->MEASdataU.MEASdata.num; k++)
 	{
 		switch (MEASdataU.MEASdata.Obs[k].gnss)
@@ -411,9 +439,14 @@ bool MEAS::printdata(void)
 		default:
 			break;
 		}
-		std::cout << setw(12) << (short)this->MEASdataU.MEASdata.Obs[k].ID << setw(12) << (short)this->MEASdataU.MEASdata.Obs[k].CN0
-			<< setw(15) << this->MEASdataU.MEASdata.Obs[k].L << setw(15) << this->MEASdataU.MEASdata.Obs[k].ph << setw(12) << this->MEASdataU.MEASdata.Obs[k].d
-			<< setw(12) << this->MEASdataU.MEASdata.Obs[k].lockTime << setw(12) << (short)this->MEASdataU.MEASdata.Obs[k].flag << std::endl;
+		std::cout << setw(12) << (short)this->MEASdataU.MEASdata.Obs[k].ID 
+			<< setw(12) << (short)this->MEASdataU.MEASdata.Obs[k].CN0
+			<< setw(15) << this->MEASdataU.MEASdata.Obs[k].L 
+			<< setw(15) << this->MEASdataU.MEASdata.Obs[k].ph 
+			<< setw(12) << this->MEASdataU.MEASdata.Obs[k].d
+			<< setw(12) << this->MEASdataU.MEASdata.Obs[k].lockTime 
+			<< setw(12) << (short)this->MEASdataU.MEASdata.Obs[k].flag 
+			<< std::endl;
 	}
 
 	return 1;

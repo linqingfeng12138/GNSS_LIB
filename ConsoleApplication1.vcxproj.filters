@@ -27,7 +27,7 @@
     <ClCompile Include="BDSEPH.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="printNAV.cpp">
+    <ClCompile Include="printF.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="common.cpp">
@@ -44,7 +44,7 @@
     <ClInclude Include="BDSEPH.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="printNAV.h">
+    <ClInclude Include="printF.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="common.h">

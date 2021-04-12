@@ -1,5 +1,6 @@
 #include "BDSEPH.h"
-#include "printNAV.h"
+#include "printF.h"
+#include "common.h"
 #include <math.h>
 #include <iostream>
 #include <iomanip>
@@ -248,11 +249,25 @@ bool BDSEPH::calculatedata(void) {
 **********************************************************************/
 bool BDSEPH::printdata(void) 
 {
-	printNAV NAVbds;
+	printF NAVbds;
+
+	/*
+	Common gpsCalender;
+	gtime_t ttemp;
+	std::cout << left;
+	std::cout << setw(1) << "C";
+	NAVbds.printPRN(BDSEPHdata.PRN);
+	//计算EPOCH
+	ttemp = gpsCalender.epoch2time(bdt0);		//获得整秒+小数秒的gpst0时间
+	ttemp = gpsCalender.timeadd(ttemp, BDSEPHdata.toc); //获得从1970年开始的time总数
+	gpsCalender.time2epoch(ttemp, gpsCalender.ep);
+	//打印EPOCH
+	NAVbds.printNavEpoch(gpsCalender.ep); //打印EPOCH格式的toc
+	//NAVgps.printNAVdata1dot12(GPSEPHdata.toc);
+	*/
 
 	std::cout << left;
 	std::cout << setw(1) << "C";
-
 	NAVbds.printPRN(BDSEPHdata.PRN);
 	NAVbds.printNAVdata1dot12(BDSEPHdata.toc);
 	NAVbds.printNAVdata1dot12(BDSEPHdata.a0);

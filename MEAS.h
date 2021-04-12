@@ -50,6 +50,7 @@ private:
 	uint8_t buffdataPoint; //指示联合体的buffdata坐标，写完后立即++，所以指示下一个待写入的位置
 
 	uint8_t check[2];		//校验和
+
 	enum Status_t			//各种状态值
 	{
 		GOTHEAD = 1,
@@ -57,6 +58,17 @@ private:
 		GOTLENGTH,
 		GOTTIME,
 		GOTOBS
+	};
+
+	struct ObsTime
+	{
+		uint8_t year;
+		uint8_t month;
+		uint8_t day;
+		uint8_t hour;
+		uint8_t minute;
+		double second;
+
 	};
 
 private:
