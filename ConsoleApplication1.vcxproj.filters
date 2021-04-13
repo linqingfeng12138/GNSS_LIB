@@ -33,6 +33,12 @@
     <ClCompile Include="common.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="GPSIONO.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BDSINO.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEAS.h">
@@ -48,6 +54,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GPSIONO.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BDSINO.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -94,7 +94,7 @@ private:
 	};
 
 	/* BDS的星历数据长度恒为81 */
-	uint16_t datalength = 81;	 
+	const uint16_t datalength = 81;	 
 
 	/* -----数据校验----*/
 	uint8_t check[2];

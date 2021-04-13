@@ -97,7 +97,7 @@ private:
 		GOTGPSEPH
 	};
 
-	uint16_t datalength = 63;	 /* GPS的星历数据长度恒为63 */
+	const uint16_t datalength = 63;	 /* GPS的星历数据长度恒为63 */
 
 	/* -----数据校验----*/
 

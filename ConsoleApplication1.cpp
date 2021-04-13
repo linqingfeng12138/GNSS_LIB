@@ -7,6 +7,8 @@
 #include "MEAS.h"
 #include "GPSEPH.h"
 #include "BDSEPH.h"
+#include "GPSIONO.h"
+#include "BDSINO.h"
 
 HANDLE hComm;
 OVERLAPPED OverLapped;
@@ -102,8 +104,10 @@ void ReciveChar()
 	DWORD BytesRead = 0;
 	char RXBuff[100] = { 0 };
 	static MEAS msg;
-	static GPSEPH msg2;
-	static BDSEPH msg3;
+	static GPSEPH msg1;
+	static BDSEPH msg2;
+	static GPSIONO msg3;
+	static BDSINO msg4;
 
 	for (;;)
 	{
@@ -121,8 +125,10 @@ void ReciveChar()
 			if ((bResult && BytesRead))
 			{
 				msg.StreamAnaylse(BytesRead, RXBuff);
+				//msg1.StreamAnaylse(BytesRead, RXBuff);
 				//msg2.StreamAnaylse(BytesRead, RXBuff);
 				//msg3.StreamAnaylse(BytesRead, RXBuff);
+				//msg4.StreamAnaylse(BytesRead, RXBuff);
 
 			}
 			if (!bResult)
