@@ -145,18 +145,22 @@
     <ClCompile Include="BDSINO.cpp" />
     <ClCompile Include="common.cpp" />
     <ClCompile Include="ConsoleApplication1.cpp" />
+    <ClCompile Include="GNSSANL.cpp" />
     <ClCompile Include="GPSEPH.cpp" />
     <ClCompile Include="GPSIONO.cpp" />
     <ClCompile Include="MEAS.cpp" />
+    <ClCompile Include="MesAnalysis.cpp" />
     <ClCompile Include="printF.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BDSEPH.h" />
     <ClInclude Include="BDSINO.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="GNSSANL.h" />
     <ClInclude Include="GPSEPH.h" />
     <ClInclude Include="GPSIONO.h" />
     <ClInclude Include="MEAS.h" />
+    <ClInclude Include="MesAnalysis.h" />
     <ClInclude Include="printF.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

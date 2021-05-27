@@ -9,6 +9,7 @@
 #include "BDSEPH.h"
 #include "GPSIONO.h"
 #include "BDSINO.h"
+#include "MesAnalysis.h"
 
 HANDLE hComm;
 OVERLAPPED OverLapped;
@@ -103,6 +104,7 @@ void ReciveChar()
 	DWORD dwError = 0;
 	DWORD BytesRead = 0;
 	char RXBuff[100] = { 0 };
+	static MesAnalysis mes;
 	static MEAS msg;
 	static GPSEPH msg1;
 	static BDSEPH msg2;
@@ -124,7 +126,7 @@ void ReciveChar()
 			//std::cout << RXBuff;
 			if ((bResult && BytesRead))
 			{
-				msg.StreamAnaylse(BytesRead, RXBuff);
+				mes.StreamAnaylse(BytesRead, RXBuff);
 				//msg1.StreamAnaylse(BytesRead, RXBuff);
 				//msg2.StreamAnaylse(BytesRead, RXBuff);
 				//msg3.StreamAnaylse(BytesRead, RXBuff);

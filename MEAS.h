@@ -1,16 +1,18 @@
 #pragma once
 
 #include <stdint.h>
+#include "GNSSANL.h"
 
 #define MAXOBS      36     /* max number of obs  受协议中的952长度限制 */
 #define MAXLength   952    /* MEAS数据的最大长度 */
 
-class MEAS
+class MEAS :public GNSSANL
 {
 public:
 	MEAS();
+	MEAS(uint8_t check0, uint8_t check1);
 	~MEAS();
-	bool StreamAnaylse(unsigned long len, char* RxBuffer);
+	int StreamAnaylse(unsigned long len, char* RxBuffer);
 
 private:
 
@@ -79,5 +81,6 @@ private:
 	int readobs(char* RxBuffer , uint8_t* num ,uint8_t* point);
 	int readChkSum(char* RxBuffer);
 	bool printdata(void);
+	uint8_t status = 0;        //解码数据流的进程
 };
 

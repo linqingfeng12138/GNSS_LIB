@@ -1,12 +1,14 @@
 #pragma once
 
 #include<stdint.h>
-class GPSIONO
+#include "GNSSANL.h"
+class GPSIONO : public GNSSANL
 {
 public:
 	GPSIONO();
 	~GPSIONO();
-	bool StreamAnaylse(unsigned long len, char* RxBuffer);
+	GPSIONO(uint8_t check0, uint8_t check1);
+	int StreamAnaylse(unsigned long len, char* RxBuffer);
 private:
 
 #pragma pack(1) //解决了计算机由于对齐问题在结构体中储存地址不连续问题

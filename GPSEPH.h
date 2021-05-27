@@ -1,15 +1,17 @@
 #pragma once
 
 #include<stdint.h>
+#include "GNSSANL.h"
 
 
 
-class GPSEPH
+class GPSEPH : public GNSSANL
 {
 public:
 	GPSEPH();
+	GPSEPH(uint8_t check0, uint8_t check1);
 	~GPSEPH();
-	bool StreamAnaylse(unsigned long len, char* RxBuffer);
+	int StreamAnaylse(unsigned long len, char* RxBuffer);
 private:
 
 #pragma pack(1) //解决了计算机由于对齐问题在结构体中储存地址不连续问题
@@ -117,6 +119,7 @@ private:
 
 	/* -----转化单位函数----*/
 	bool calculatedata(void);
+
 
 };
 

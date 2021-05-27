@@ -22,6 +22,12 @@ MEAS::MEAS()
 	this->buffdataPoint = 0;
 }
 
+MEAS::MEAS(uint8_t check0, uint8_t check1):MEAS::MEAS()
+{
+	this->check[0] = check0;
+	this->check[1] = check1;
+}
+
 MEAS::~MEAS()
 {
 }
@@ -31,9 +37,9 @@ MEAS::~MEAS()
 * Description	: 记录观测值数据流
 * Return:		: 1 ok		0 fail
 **********************************************************************/
-bool MEAS::StreamAnaylse(unsigned long len, char* RxBuffer)
+int MEAS::StreamAnaylse(unsigned long len, char* RxBuffer)
 {
-	static uint8_t status = 0;        //解码数据流的进程
+	static uint8_t status = 2;        //解码数据流的进程
 	static uint8_t alreadObsNum = 0;  //the number of Satellites which had already been read
 	int result = 0;					//各子程序返回的结果
 
@@ -98,11 +104,11 @@ bool MEAS::StreamAnaylse(unsigned long len, char* RxBuffer)
 			result = readChkSum(RxBuffer + i);
 			if (result == 1)
 			{
-				status = 6;
+				printdata();
 				//std::cout <<  (short)status << std::endl;  //调试打印
 				//std::cout << "~!~!"<< MEASdataU.MEASdata.Obs[0].gnss << std::endl;  //调试打印
-				printdata();
-				status = 0;						//读取成功后状态清零
+				status = 2;						//读取成功后状态清零
+				return 1;
 			}
 			break;
 		default:
@@ -111,11 +117,11 @@ bool MEAS::StreamAnaylse(unsigned long len, char* RxBuffer)
 
 		if ( result == -1)
 		{
-			status = 0;
-			return 0;
+			status = 2;
+			return -1;
 		}
-		return 1;
 	}
+	return 0;
 }
 
 /**********************************************************************

@@ -39,6 +39,12 @@
     <ClCompile Include="BDSINO.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MesAnalysis.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GNSSANL.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEAS.h">
@@ -60,6 +66,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="BDSINO.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MesAnalysis.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GNSSANL.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

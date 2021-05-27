@@ -13,6 +13,12 @@ GPSEPH::GPSEPH()
 {
 }
 
+GPSEPH::GPSEPH(uint8_t check0, uint8_t check1)
+{
+	this->check[0] = check0;
+	this->check[1] = check1;
+}
+
 GPSEPH::~GPSEPH()
 {
 }
@@ -246,6 +252,7 @@ bool GPSEPH::calculatedata(void)
 	return 1;
 }
 
+
 /**********************************************************************
 * Function		: printdata
 * Description	: 打印GPS星历数据
@@ -334,10 +341,10 @@ bool GPSEPH::printdata(void)
 * Description	: 解析GPS星历数据
 * Return:		: 1 ok		0 fail	
 **********************************************************************/
-bool GPSEPH::StreamAnaylse(unsigned long len, char* RxBuffer)
+int GPSEPH::StreamAnaylse(unsigned long len, char* RxBuffer)
 {
 	int8_t result = 0;	//读取结果
-	static uint8_t status = 0;  //解析数据进程
+	static uint8_t status = 2;  //解析数据进程
 
 	for (uint8_t i = 0; i < len; i++)
 	{
@@ -396,19 +403,20 @@ bool GPSEPH::StreamAnaylse(unsigned long len, char* RxBuffer)
 				status = 5;		
 				//std::cout <<  (short)status << std::endl;  //调试打印
 				printdata();
-				status = 0;						//读取成功后状态清零
+				status = 2;						//读取成功后状态清零
+				return 1;
 			}
 			break;
 		default:	
-			status = 0;
+			status = 2;
 			break;
 		}
 
 		if (result == -1)				//如果读取失败，则状态重新开始
 		{
-			status = 0;
-			return 0;
+			status = 2;
+			return -1;
 		}
 	}
-	return 1;
+	return 0;
 }
